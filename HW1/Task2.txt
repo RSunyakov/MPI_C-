@@ -1,0 +1,21 @@
+#include <iostream>
+using namespace std;
+#include <omp.h>
+
+int HW2() {
+    int num_threads = 3;
+    omp_set_num_threads(num_threads);
+#pragma omp parallel if(num_threads > 1) 
+    if (num_threads > 1)
+    {
+     
+        printf("Thread(%d) of (%d)\n", omp_get_thread_num(), omp_get_num_threads());
+    }
+    num_threads = 1;
+    omp_set_num_threads(num_threads);
+#pragma omp parallel if(num_threads > 1) 
+    if (num_threads > 1)
+    {
+        printf("Thread(%d) of (%d)\n", omp_get_thread_num(), omp_get_num_threads());
+    }
+}

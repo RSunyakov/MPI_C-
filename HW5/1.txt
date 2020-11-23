@@ -1,0 +1,10 @@
+#include "pch.h"
+#include "mpi.h"
+#include <iostream>
+
+int main(int argc, char **argv)
+{
+	MPI_Init(&argc, &argv);
+	printf("Hello, World! \n");
+	MPI_Finalize();
+}

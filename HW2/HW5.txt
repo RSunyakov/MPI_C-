@@ -1,0 +1,58 @@
+#include <iostream>
+using namespace std;
+#include <omp.h>
+#include <time.h>
+
+int HW5() {
+	int d[6][8];
+	srand(time(NULL));
+	for (int i = 0; i < 6; ++i) {
+		for (int j = 0; j < 8; ++j) {
+			d[i][j] = rand() % 30;
+		}
+	}
+#pragma omp parallel sections 
+	{
+#pragma omp section
+		{
+			int elements = 0;
+			int sum = 0;
+			for (int i = 0; i < 6; i++) {
+				for (int j = 0; j < 8; j++) {
+					sum += d[i][j];
+					elements++;
+				}
+			}
+			printf("medium = %.2f from %d thread\n", sum * 1.0 / elements, omp_get_thread_num());
+		}
+#pragma omp section
+		{
+			int min = 30 + 1;
+			int max = -1;
+			for (int i = 0; i < 6; i++) {
+				for (int j = 0; j < 8; j++) {
+					if (max > d[i][j]) {
+						max = d[i][j];
+					}
+					if (min < d[i][j]) {
+						min = d[i][j];
+					}
+				}
+			}
+			printf("Maximum = %d Minimum = %d from %d thread\n", max, min, omp_get_thread_num());
+		}
+#pragma omp section
+		{
+			int count = 0;;
+			for (int i = 0; i < 6; i++) {
+				for (int j = 0; j < 8; j++) {
+					if (d[i][j] % 3 == 0) {
+						count++;
+					}
+				}
+			}
+			printf("count of 3 division = %d from %d thread\n", count, omp_get_thread_num());
+		}
+	}
+	}
+
